@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, jsonify, render_template
 import psycopg2
 import os
 from flask_cors import CORS
@@ -6,7 +6,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Load database credentials from environment variables
+# Retrieve database credentials from environment variables.
+# For production, consider using AWS Secrets Manager or Parameter Store.
 DB_HOST = os.getenv("DB_HOST", "your-rds-endpoint")
 DB_NAME = os.getenv("DB_NAME", "your-database")
 DB_USER = os.getenv("DB_USER", "your-username")
@@ -47,4 +48,5 @@ def get_data():
         conn.close()
 
 if __name__ == '__main__':
+    # For production, use gunicorn to run the app.
     app.run(host='0.0.0.0', port=5000, debug=True)
