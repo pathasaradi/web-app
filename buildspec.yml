@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - echo "Building the Flask application..."
+      - mkdir -p deploy
+      - cp -r * deploy/
+  post_build:
+    commands:
+      - echo "Build completed. Uploading artifacts..."
+      - aws s3 cp deploy/ s3://your-bucket-name/ --recursive
+
+artifacts:
+  files:
+    - deploy/**
